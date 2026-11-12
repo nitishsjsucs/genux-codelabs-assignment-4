@@ -1,0 +1,3 @@
+root = Card("When to charge the EV", [windows, advice], {{subtitle}})
+windows = Table(["Window", "Source", "Est. cost"], {{rows}})
+advice = Text({{advice}})

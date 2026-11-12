@@ -1,0 +1,63 @@
+$ python3 labs/01_ag_ui/mixed.py
+
+==================================================================
+  AG-UI · 4 · mixed - catalog tree + one GeneratedView + actions
+==================================================================
+user: How did my solar do this week, and when should I charge the EV?
+
+RUN 1  POST /api/01_ag_ui/mixed  ->  SSE
+  RUN_STARTED           threadId=thread-voltpilot runId=run-038c390e
+  STATE_SNAPSHOT        snapshot keys=[]
+  TEXT_MESSAGE_START    messageId=msg-786530dc role=assistant
+  TEXT_MESSAGE_CONTENT  x3   Numbers from the catalog, plus one clock the catalog cannot draw.
+  TEXT_MESSAGE_END      messageId=msg-786530dc
+  TOOL_CALL_START       toolCallId=call_1_1 toolCallName=render_ui parentMessageId=msg-786530dc
+  TOOL_CALL_ARGS        x186 {"spec": {"root": "root", "elements": {"root": {"type": "Column", "props": {"gap": "medium"},...
+  TOOL_CALL_END         toolCallId=call_1_1
+  STATE_DELTA           add /ui
+  TOOL_CALL_RESULT      messageId=msg-8606216b toolCallId=call_1_1 content=rendered 17 components role=tool
+  TEXT_MESSAGE_START    messageId=msg-694e2dc3 role=assistant
+  TEXT_MESSAGE_CONTENT  x3   Press 'Schedule 10:30-15:00' - on the card or on the clock - and I will book it.
+  TEXT_MESSAGE_END      messageId=msg-694e2dc3
+  RUN_FINISHED          threadId=thread-voltpilot runId=run-038c390e
+
+state.ui: 17 components ['BarChart', 'Button', 'Card', 'Column', 'GeneratedView', 'Metric', 'Row', 'Table', 'Text']
+YOUR SOLAR WEEK
+Solar generated: 133.3 kWh (+9% vs last week)  |  Self-sufficiency: 71% (best day Sat)  |  Grid import cost: $11.93 (45.9 kWh)  |  Home battery: 64%
++-- Solar vs usage -------------------------------------------------------
+  Solar generated per day
+     Mon ######################         16.8 kWh
+     Tue ##########################     19.4 kWh
+     Wed ############################   21.2 kWh
+     Thu ###################            14.1 kWh
+     Fri #########################      18.9 kWh
+     Sat ############################## 22.6 kWh
+     Sun ###########################    20.3 kWh
++-------------------------------------------------------------------------
++-- When to charge the EV - 31.5 kWh needed - about 4.4 h at 7.2 kW ------
+  Window       Source                     Est. cost
+  -----------  -------------------------  ---------
+  10:30-15:00  Solar surplus + top-up     $1.10
+  00:00-04:30  Off-peak grid ($0.12/kWh)  $3.78
+  16:00-20:30  Peak grid ($0.48/kWh)      $15.12
+  Charge 10:30-15:00 on solar surplus - saves $14.02 vs peak.
+  [ Schedule 10:30-15:00 ] -> schedule_ev_charge  |  [ Not now ] -> dismiss
++-------------------------------------------------------------------------
++-- Today on the clock - A view the catalog cannot draw - generated, sandboxed --
+  [generated view: Energy clock - 3262 bytes of HTML; open the web surface to see it]
++-------------------------------------------------------------------------
+
+click on the catalog Button 'Schedule 10:30-15:00' -> RUN 2
+  RUN_STARTED           threadId=thread-voltpilot runId=run-1ca95754
+  STATE_SNAPSHOT        snapshot keys=['ui']
+  TOOL_CALL_START       toolCallId=call_3_1 toolCallName=schedule_ev_charge parentMessageId=msg-25aa908a
+  TOOL_CALL_ARGS        x1   {"window": "10:30-15:00"}
+  TOOL_CALL_END         toolCallId=call_3_1
+  STATE_DELTA           add /ev; add /ui/elements/booked; add /ui/elements/root/children/1
+  TOOL_CALL_RESULT      messageId=msg-a4fffe8b toolCallId=call_3_1 content=Booked: the EV will charge 10:30-15:00 (estimated ...
+  TEXT_MESSAGE_START    messageId=msg-3c228e3e role=assistant
+  TEXT_MESSAGE_CONTENT  x2   Booked: the EV will charge 10:30-15:00 (estimated $1.10).
+  TEXT_MESSAGE_END      messageId=msg-3c228e3e
+  RUN_FINISHED          threadId=thread-voltpilot runId=run-1ca95754
+
+after the action: {'text': 'Booked: the EV will charge 10:30-15:00 (estimated $1.10).', 'variant': 'success'}

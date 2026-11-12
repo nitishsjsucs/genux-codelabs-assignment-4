@@ -1,0 +1,96 @@
+$ python3 labs/01_ag_ui/declarative.py
+
+===============================================================
+  AG-UI · 2 · declarative - the UI tree lives in shared state
+===============================================================
+user: How did my solar do this week, and when should I charge the EV?
+
+RUN 1  POST /api/01_ag_ui/declarative  ->  SSE
+  RUN_STARTED           threadId=thread-voltpilot runId=run-b79604b1
+  STATE_SNAPSHOT        snapshot keys=['ui']
+  TEXT_MESSAGE_START    messageId=msg-5fead7e5 role=assistant
+  TEXT_MESSAGE_CONTENT  x2   Building your dashboard piece by piece.
+  TEXT_MESSAGE_END      messageId=msg-5fead7e5
+  TOOL_CALL_START       toolCallId=call_1_1 toolCallName=add_component parentMessageId=msg-5fead7e5
+  TOOL_CALL_ARGS        x4   {"id": "text-1", "parent": "root", "type": "Text", "props": {"text": "Your solar week", "vari...
+  TOOL_CALL_END         toolCallId=call_1_1
+  TOOL_CALL_START       toolCallId=call_1_2 toolCallName=add_component parentMessageId=msg-5fead7e5
+  TOOL_CALL_ARGS        x3   {"id": "row-1", "parent": "root", "type": "Row", "props": {"gap": "medium"}}
+  TOOL_CALL_END         toolCallId=call_1_2
+  TOOL_CALL_START       toolCallId=call_1_3 toolCallName=add_component parentMessageId=msg-5fead7e5
+  TOOL_CALL_ARGS        x6   {"id": "metric-1", "parent": "row-1", "type": "Metric", "props": {"label": "Solar generated",...
+  TOOL_CALL_END         toolCallId=call_1_3
+  TOOL_CALL_START       toolCallId=call_1_4 toolCallName=add_component parentMessageId=msg-5fead7e5
+  TOOL_CALL_ARGS        x5   {"id": "metric-2", "parent": "row-1", "type": "Metric", "props": {"label": "Self-sufficiency"...
+  TOOL_CALL_END         toolCallId=call_1_4
+  TOOL_CALL_START       toolCallId=call_1_5 toolCallName=add_component parentMessageId=msg-5fead7e5
+  TOOL_CALL_ARGS        x5   {"id": "metric-3", "parent": "row-1", "type": "Metric", "props": {"label": "Grid import cost"...
+  TOOL_CALL_END         toolCallId=call_1_5
+  TOOL_CALL_START       toolCallId=call_1_6 toolCallName=add_component parentMessageId=msg-5fead7e5
+  TOOL_CALL_ARGS        x4   {"id": "metric-4", "parent": "row-1", "type": "Metric", "props": {"label": "Home battery", "v...
+  TOOL_CALL_END         toolCallId=call_1_6
+  TOOL_CALL_START       toolCallId=call_1_7 toolCallName=add_component parentMessageId=msg-5fead7e5
+  TOOL_CALL_ARGS        x3   {"id": "card-1", "parent": "root", "type": "Card", "props": {"title": "Solar vs usage"}}
+  TOOL_CALL_END         toolCallId=call_1_7
+  TOOL_CALL_START       toolCallId=call_1_8 toolCallName=add_component parentMessageId=msg-5fead7e5
+  TOOL_CALL_ARGS        x8   {"id": "barchart-1", "parent": "card-1", "type": "BarChart", "props": {"title": "Solar genera...
+  TOOL_CALL_END         toolCallId=call_1_8
+  TOOL_CALL_START       toolCallId=call_1_9 toolCallName=add_component parentMessageId=msg-5fead7e5
+  TOOL_CALL_ARGS        x5   {"id": "card-2", "parent": "root", "type": "Card", "props": {"title": "When to charge the EV"...
+  TOOL_CALL_END         toolCallId=call_1_9
+  TOOL_CALL_START       toolCallId=call_1_10 toolCallName=add_component parentMessageId=msg-5fead7e5
+  TOOL_CALL_ARGS        x9   {"id": "table-1", "parent": "card-2", "type": "Table", "props": {"columns": ["Window", "Sourc...
+  TOOL_CALL_END         toolCallId=call_1_10
+  TOOL_CALL_START       toolCallId=call_1_11 toolCallName=add_component parentMessageId=msg-5fead7e5
+  TOOL_CALL_ARGS        x5   {"id": "text-2", "parent": "card-2", "type": "Text", "props": {"text": "Charge 10:30-15:00 on...
+  TOOL_CALL_END         toolCallId=call_1_11
+  STATE_DELTA           add /ui/elements/text-1; add /ui/elements/root/children/-
+  TOOL_CALL_RESULT      messageId=msg-51e1f931 toolCallId=call_1_1 content=added Text text-1 under root role=tool
+  STATE_DELTA           add /ui/elements/row-1; add /ui/elements/root/children/-
+  TOOL_CALL_RESULT      messageId=msg-f05d91d1 toolCallId=call_1_2 content=added Row row-1 under root role=tool
+  STATE_DELTA           add /ui/elements/metric-1; add /ui/elements/row-1/children/-
+  TOOL_CALL_RESULT      messageId=msg-abb8a840 toolCallId=call_1_3 content=added Metric metric-1 under row-1 role=tool
+  STATE_DELTA           add /ui/elements/metric-2; add /ui/elements/row-1/children/-
+  TOOL_CALL_RESULT      messageId=msg-0b54d82c toolCallId=call_1_4 content=added Metric metric-2 under row-1 role=tool
+  STATE_DELTA           add /ui/elements/metric-3; add /ui/elements/row-1/children/-
+  TOOL_CALL_RESULT      messageId=msg-b8e20e39 toolCallId=call_1_5 content=added Metric metric-3 under row-1 role=tool
+  STATE_DELTA           add /ui/elements/metric-4; add /ui/elements/row-1/children/-
+  TOOL_CALL_RESULT      messageId=msg-2328b040 toolCallId=call_1_6 content=added Metric metric-4 under row-1 role=tool
+  STATE_DELTA           add /ui/elements/card-1; add /ui/elements/root/children/-
+  TOOL_CALL_RESULT      messageId=msg-7a6b27cc toolCallId=call_1_7 content=added Card card-1 under root role=tool
+  STATE_DELTA           add /ui/elements/barchart-1; add /ui/elements/card-1/children/-
+  TOOL_CALL_RESULT      messageId=msg-343f01fa toolCallId=call_1_8 content=added BarChart barchart-1 under card-1 role=tool
+  STATE_DELTA           add /ui/elements/card-2; add /ui/elements/root/children/-
+  TOOL_CALL_RESULT      messageId=msg-dd9152dd toolCallId=call_1_9 content=added Card card-2 under root role=tool
+  STATE_DELTA           add /ui/elements/table-1; add /ui/elements/card-2/children/-
+  TOOL_CALL_RESULT      messageId=msg-c43fd2e1 toolCallId=call_1_10 content=added Table table-1 under card-2 role=tool
+  STATE_DELTA           add /ui/elements/text-2; add /ui/elements/card-2/children/-
+  TOOL_CALL_RESULT      messageId=msg-b6646125 toolCallId=call_1_11 content=added Text text-2 under card-2 role=tool
+  TEXT_MESSAGE_START    messageId=msg-1390bc73 role=assistant
+  TEXT_MESSAGE_CONTENT  x2   Done. Charge 10:30-15:00 - it is the cheapest window this week.
+  TEXT_MESSAGE_END      messageId=msg-1390bc73
+  RUN_FINISHED          threadId=thread-voltpilot runId=run-b79604b1
+
+client replayed 1 snapshot + 11 deltas -> 12 elements; catalog errors: none
+what the page draws (terminal renderer, same tree):
+
+YOUR SOLAR WEEK
+Solar generated: 133.3 kWh (+9% vs last week)  |  Self-sufficiency: 71% (best day Sat)  |  Grid import cost: $11.93 (45.9 kWh)  |  Home battery: 64%
++-- Solar vs usage -------------------------------------------------------
+  Solar generated per day
+     Mon ######################         16.8 kWh
+     Tue ##########################     19.4 kWh
+     Wed ############################   21.2 kWh
+     Thu ###################            14.1 kWh
+     Fri #########################      18.9 kWh
+     Sat ############################## 22.6 kWh
+     Sun ###########################    20.3 kWh
++-------------------------------------------------------------------------
++-- When to charge the EV - 31.5 kWh needed - about 4.4 h at 7.2 kW ------
+  Window       Source                     Est. cost
+  -----------  -------------------------  ---------
+  10:30-15:00  Solar surplus + top-up     $1.10
+  00:00-04:30  Off-peak grid ($0.12/kWh)  $3.78
+  16:00-20:30  Peak grid ($0.48/kWh)      $15.12
+  Charge 10:30-15:00 on solar surplus - saves $14.02 vs peak.
++-------------------------------------------------------------------------

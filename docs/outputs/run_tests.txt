@@ -1,0 +1,11 @@
+$ python3 run_tests.py
+
+== Python: python3 -m unittest discover -s tests
+Ran 73 tests in 1.536s
+
+OK
+
+== JavaScript: node --test tests/js/common.test.mjs tests/js/labs.test.mjs
+11/11 passed
+
+summary: python OK (73 tests) · javascript 11/11 passed

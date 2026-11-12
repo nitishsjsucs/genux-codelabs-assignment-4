@@ -1,0 +1,12 @@
+$ python3 labs/00_foundations/open_ended.py
+
+==========================================================================
+  Foundations · OPEN-ENDED - the model writes HTML; the app sandboxes it
+==========================================================================
+user: How did my solar do this week, and when should I charge the EV?
+
+model output (3262 bytes): <!doctype html>
+<html><head><style>
+body{margin:0;font:13px system-ui,sans-serif;color:#1f2937;background:#fffdf7;display:flex;gap:14px;align-items:center;paddi...
+app checks: passed
+app renders: sandboxed iframe (srcdoc) with CSP: default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; font-src 'none'; connect-src 'none'; frame-src 'none'; form-action 'none'; base-uri 'none'

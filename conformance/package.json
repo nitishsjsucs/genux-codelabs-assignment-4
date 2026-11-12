@@ -1,0 +1,15 @@
+{
+  "name": "voltpilot-conformance",
+  "private": true,
+  "type": "module",
+  "description": "Optional: check this repo's hand-written protocol code against the official SDKs.",
+  "scripts": {
+    "check": "node agui.mjs && node mcp.mjs && node formats.mjs"
+  },
+  "dependencies": {
+    "@ag-ui/core": "0.0.39",
+    "@json-render/core": "0.20.0",
+    "@modelcontextprotocol/sdk": "1.17.4",
+    "@openuidev/lang-core": "0.2.18"
+  }
+}

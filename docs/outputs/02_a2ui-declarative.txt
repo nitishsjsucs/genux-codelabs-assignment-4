@@ -1,0 +1,40 @@
+$ python3 labs/02_a2ui/declarative.py
+
+==================================================================
+  A2UI · 2 · declarative - model-written components + data model
+==================================================================
+user: How did my solar do this week, and when should I charge the EV?
+
+  [model] createSurface     surface=voltpilot-week catalog=energy
+  [model] updateComponents  7 components  root:Column, hdr:Text, metrics:Row, m1:Metric, m2:Metric, m3:Metric, m4:Metric
+  [model] updateComponents  4 components  chart-card:Card, chart-col:Column, chart-title:Text, chart:BarChart
+  [model] updateComponents  6 components  ev-card:Card, ev-col:Column, ev-title:Text, ev-sub:Text, ev-table:Table, ev-a...
+  [model] updateDataModel   /ev = {"windows":[["10:30-15:00","Solar surplus + top-up","$1.10"],["00:00-...
+
+client state: 17 components, data paths ['ev']; missing refs: none
+YOUR SOLAR WEEK
+Solar generated: 133.3 kWh (+9% vs last week)  |  Self-sufficiency: 71% (best day Sat)  |  Grid import cost: $11.93 (45.9 kWh)  |  Home battery: 64%
++-------------------------------------------------------------------------
+  Solar vs usage
+  Solar generated per day
+     Mon ######################         16.8 kWh
+     Tue ##########################     19.4 kWh
+     Wed ############################   21.2 kWh
+     Thu ###################            14.1 kWh
+     Fri #########################      18.9 kWh
+     Sat ############################## 22.6 kWh
+     Sun ###########################    20.3 kWh
++-------------------------------------------------------------------------
++-------------------------------------------------------------------------
+  When to charge the EV
+  31.5 kWh needed - about 4.4 h at 7.2 kW
+  Window       Source                     Est. cost
+  -----------  -------------------------  ---------
+  10:30-15:00  Solar surplus + top-up     $1.10
+  00:00-04:30  Off-peak grid ($0.12/kWh)  $3.78
+  16:00-20:30  Peak grid ($0.48/kWh)      $15.12
+  Charge 10:30-15:00 on solar surplus - saves $14.02 vs peak.
++-------------------------------------------------------------------------
+
+catalog check - a component the energy catalog does not have:
+  [model] REJECTED  updateComponents/components/0 (pie): component 'PieChart' is not in catalog https://voltpilot.example/a2ui/catalogs/energy/v1/catalog.json

@@ -1,0 +1,54 @@
+$ python3 labs/02_a2ui/mixed.py
+
+==============================================================
+  A2UI · 4 · mixed - catalog + HtmlFrame + action round trip
+==============================================================
+user: How did my solar do this week, and when should I charge the EV?
+
+  [model] createSurface     surface=voltpilot-week catalog=energy-open
+  [model] updateComponents  7 components  root:Column, hdr:Text, metrics:Row, m1:Metric, m2:Metric, m3:Metric, m4:Metric
+  [model] updateComponents  15 components  chart-card:Card, chart-col:Column, chart-title:Text, chart:BarChart, ev-card:...
+  [model] updateDataModel   /ev = {"windows":[["10:30-15:00","Solar surplus + top-up","$1.10"],["00:00-...
+  [model] updateComponents  5 components  clock-card:Card, clock-col:Column, clock-title:Text, clock-note:Text, clock:H...
+  [model] updateDataModel   /clock/html = <!doctype html>\n<html><head><style>\nbody{margin:0;font:13px system-...
+
+client state: 27 components, data paths ['clock', 'ev']; missing refs: none
+YOUR SOLAR WEEK
+Solar generated: 133.3 kWh (+9% vs last week)  |  Self-sufficiency: 71% (best day Sat)  |  Grid import cost: $11.93 (45.9 kWh)  |  Home battery: 64%
++-------------------------------------------------------------------------
+  Solar vs usage
+  Solar generated per day
+     Mon ######################         16.8 kWh
+     Tue ##########################     19.4 kWh
+     Wed ############################   21.2 kWh
+     Thu ###################            14.1 kWh
+     Fri #########################      18.9 kWh
+     Sat ############################## 22.6 kWh
+     Sun ###########################    20.3 kWh
++-------------------------------------------------------------------------
++-------------------------------------------------------------------------
+  When to charge the EV
+  31.5 kWh needed - about 4.4 h at 7.2 kW
+  Window       Source                     Est. cost
+  -----------  -------------------------  ---------
+  10:30-15:00  Solar surplus + top-up     $1.10
+  00:00-04:30  Off-peak grid ($0.12/kWh)  $3.78
+  16:00-20:30  Peak grid ($0.48/kWh)      $15.12
+  Charge 10:30-15:00 on solar surplus - saves $14.02 vs peak.
+  [ Schedule 10:30-15:00 ] -> schedule_ev_charge  |  [ Not now ] -> dismiss
++-------------------------------------------------------------------------
++-------------------------------------------------------------------------
+  Today on the clock
+  Not in any catalog: model-written HTML, run by the energy-open catalog's sandboxed HtmlFrame.
+  [generated view: Energy clock - 3262 bytes of HTML; open the web surface to see it]
++-------------------------------------------------------------------------
+
+click -> client sends: {'version': 'v0.9.1', 'action': {'name': 'schedule_ev_charge', 'surfaceId': 'voltpilot-week', 'sourceComponentId': 'btn-schedule', 'timestamp': '2026-11-11T18:00:00Z', 'context': {'window': '10:30-15:00'}}}
+  [model] updateDataModel   /ev/status = Booked: the EV will charge 10:30-15:00 (estimated $1.10).
+  [model] updateComponents  2 components  root:Column, booked:Callout
+
+after the action, /ev/status = 'Booked: the EV will charge 10:30-15:00 (estimated $1.10).'
+root children: ['hdr', 'booked', 'metrics', 'chart-card', 'ev-card', 'clock-card']
+
+a forged action is refused before the model sees it:
+  [app] action refused: action 'transfer_funds' is not allowed; allowed: ['dismiss', 'schedule_ev_charge']

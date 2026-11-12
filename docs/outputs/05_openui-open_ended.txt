@@ -1,0 +1,25 @@
+$ python3 labs/05_openui/open_ended.py
+
+============================================================
+  OpenUI Lang · 3 · open-ended - HtmlArtifact in a sandbox
+============================================================
+  line  1: root        = Card         pending refs:  2 (note, clock)
+  line  2: note        = Text         pending refs:  1 (clock)
+  line  3: clock       = HtmlArtifact pending refs:  0 
+
+3 statements, errors: none
++-- Today on the clock - HtmlArtifact - model-written, sandboxed ---------
+  No catalog component draws a 24-hour radial view, so the model wrote one.
+  [generated view: Energy clock - 3262 bytes of HTML; open the web surface to see it]
++-------------------------------------------------------------------------
+
+the artifact's button -> POST .../open_ended/action; the model replies with two statements:
+  booked = Text("Booked: the EV will charge 10:30-15:00 (estimated $1.10).", "success")
+  root = Card("Today on the clock", [note, booked, clock], "HtmlArtifact - model-written, sandboxed")
+
+an artifact that loads a remote script is dropped before the page sees it:
+  line  1: root        = Card         pending refs:  1 (a)
+  [app  ] REFUSED a: HtmlArtifact refused - loads a remote URL
++-- x --------------------------------------------------------------------
+  [waiting for a]
++-------------------------------------------------------------------------

@@ -1,0 +1,43 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>/*__STYLE__*/ body{background:#fff;padding:12px} </style></head>
+<body>
+<div id="app" class="vp-pending">waiting for the tool result…</div>
+<p id="status"></p>
+<script>
+/*__SCRIPTS__*/
+
+// DECLARATIVE / MIXED view: a generic renderer. The layout comes from the tool
+// result's structuredContent.spec (a canonical tree the server validated);
+// this view only knows the catalog. A GeneratedView node becomes a NESTED
+// sandboxed iframe - two boundaries deep. Buttons, in the catalog or inside
+// the nested frame, become tools/call requests the host checks for "app" visibility.
+let autoDemo = false;
+let spec = null;
+const statusEl = document.getElementById("status");
+
+async function onAction(name, params, origin) {
+  statusEl.textContent = `${origin}: ${name} ${JSON.stringify(params)} -> tools/call via host…`;
+  const result = await callTool(name, params, statusEl);
+  if (result && !result.isError) {
+    spec.children.splice(1, 0, { type: "Text", props: { text: result.structuredContent?.message ?? "done", variant: "success" }, children: [] });
+    draw();
+    appBridge.request("ui/message", { role: "user", content: { type: "text", text: result.structuredContent?.message ?? "done" } });
+  }
+}
+
+function draw() {
+  const app = document.getElementById("app");
+  app.className = "";
+  app.querySelectorAll("iframe").forEach((f) => f.detach?.());
+  app.replaceChildren(renderTree(spec, { onAction, allowGenerated: true }));
+}
+
+appBridge.on("ui/notifications/tool-result", (result) => {
+  spec = result.structuredContent?.spec;
+  if (!spec) { statusEl.textContent = "the tool result carried no spec"; return; }
+  draw();
+  if (autoDemo) setTimeout(() => document.querySelector('button[data-action="schedule_ev_charge"]')?.click(), 500);
+});
+appBridge.start({ name: "VoltPilot spec renderer", version: "1.0.0" }).then((init) => { autoDemo = !!init.hostContext?.autoDemo; });
+</script>
+</body></html>

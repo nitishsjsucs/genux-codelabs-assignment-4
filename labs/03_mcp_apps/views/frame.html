@@ -1,0 +1,30 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>/*__STYLE__*/ body{background:#fff;padding:12px} </style></head>
+<body>
+<div id="app" class="vp-pending">waiting for the generated document…</div>
+<p id="status"></p>
+<script>
+/*__SCRIPTS__*/
+
+// OPEN-ENDED view: the tool result carries model-written HTML. This view does
+// not trust it either: it mounts the document in a NESTED iframe
+// (sandbox="allow-scripts", its own CSP). An action from the nested frame
+// travels generated frame -> this view (shape + allow-list check) -> host
+// (visibility check) -> MCP server (argument check).
+let autoDemo = false;
+const statusEl = document.getElementById("status");
+
+appBridge.on("ui/notifications/tool-result", (result) => {
+  const { html, title, bytes } = result.structuredContent ?? {};
+  const app = document.getElementById("app");
+  app.className = "";
+  const head = renderTree({ type: "Text", props: { text: `${title} - ${bytes} bytes of model-written HTML, nested sandbox`, variant: "caption" }, children: [] });
+  const act = (name, params) => callTool(name, params, statusEl)
+    .then((r) => r && !r.isError && appBridge.request("ui/message", { role: "user", content: { type: "text", text: r.structuredContent?.message } }));
+  const frame = mountSandbox(html, { height: 280, title, onAction: act });
+  app.replaceChildren(head, frame);
+  if (autoDemo) setTimeout(() => act("schedule_ev_charge", { window: "10:30-15:00" }), 700); // demo flag: stands in for a click inside the nested frame
+});
+appBridge.start({ name: "VoltPilot generated view", version: "1.0.0" }).then((init) => { autoDemo = !!init.hostContext?.autoDemo; });
+</script>
+</body></html>

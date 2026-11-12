@@ -1,0 +1,59 @@
+$ python3 labs/01_ag_ui/static.py
+
+==================================================================
+  AG-UI · 1 · static - frontend tools render prebuilt components
+==================================================================
+user: How did my solar do this week, and when should I charge the EV?
+frontend declares tools: ['show_energy_summary', 'show_solar_chart', 'show_charge_plan']
+
+RUN 1  POST /api/01_ag_ui/static  ->  SSE
+  RUN_STARTED           threadId=thread-voltpilot runId=run-733b8866
+  STATE_SNAPSHOT        snapshot keys=[]
+  TEXT_MESSAGE_START    messageId=msg-245b308a role=assistant
+  TEXT_MESSAGE_CONTENT  x2   Here is your week - three panels coming up.
+  TEXT_MESSAGE_END      messageId=msg-245b308a
+  TOOL_CALL_START       toolCallId=call_1_1 toolCallName=show_energy_summary parentMessageId=msg-245b308a
+  TOOL_CALL_ARGS        x4   {"solar_kwh": 133.3, "solar_delta_pct": 9, "self_sufficiency_pct": 71, "import_cost": 11.93, ...
+  TOOL_CALL_END         toolCallId=call_1_1
+  TOOL_CALL_START       toolCallId=call_1_2 toolCallName=show_solar_chart parentMessageId=msg-245b308a
+  TOOL_CALL_ARGS        x4   {"days": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"], "solar_kwh": [16.8, 19.4, 21.2, 1...
+  TOOL_CALL_END         toolCallId=call_1_2
+  TOOL_CALL_START       toolCallId=call_1_3 toolCallName=show_charge_plan parentMessageId=msg-245b308a
+  TOOL_CALL_ARGS        x11  {"windows": [{"window": "10:30-15:00", "source": "Solar surplus + top-up", "cost": 1.1}, {"wi...
+  TOOL_CALL_END         toolCallId=call_1_3
+  RUN_FINISHED          threadId=thread-voltpilot runId=run-733b8866
+
+the page draws one prebuilt component per client tool call:
+
+  <show_energy_summary> props=['battery_pct', 'import_cost', 'self_sufficiency_pct', 'solar_delta_pct', 'solar_kwh']
+    Solar generated: 133.3 kWh (+9% vs last week)  |  Self-sufficiency: 71%  |  Grid import cost: $11.93  |  Home battery: 64%
+
+  <show_solar_chart> props=['days', 'solar_kwh']
+    Solar generated per day
+       Mon ######################         16.8 kWh
+       Tue ##########################     19.4 kWh
+       Wed ############################   21.2 kWh
+       Thu ###################            14.1 kWh
+       Fri #########################      18.9 kWh
+       Sat ############################## 22.6 kWh
+       Sun ###########################    20.3 kWh
+
+  <show_charge_plan> props=['recommendation', 'windows']
+    +-- When to charge the EV ------------------------------------------------
+      Window       Source                     Est. cost
+      -----------  -------------------------  ---------
+      10:30-15:00  Solar surplus + top-up     $1.10
+      00:00-04:30  Off-peak grid ($0.12/kWh)  $3.78
+      16:00-20:30  Peak grid ($0.48/kWh)      $15.12
+      Charge 10:30-15:00 on solar surplus - saves $14.02 vs peak.
+    +-------------------------------------------------------------------------
+
+RUN 2  (tool results sent back)  ->  SSE
+  RUN_STARTED           threadId=thread-voltpilot runId=run-31fc1c2a
+  STATE_SNAPSHOT        snapshot keys=[]
+  TEXT_MESSAGE_START    messageId=msg-e95bb06a role=assistant
+  TEXT_MESSAGE_CONTENT  x3   Your best charging window is 10:30-15:00: it saves $14.02 versus charging at peak.
+  TEXT_MESSAGE_END      messageId=msg-e95bb06a
+  RUN_FINISHED          threadId=thread-voltpilot runId=run-31fc1c2a
+
+checks: 40 events, lifecycle valid, layout decided by the page

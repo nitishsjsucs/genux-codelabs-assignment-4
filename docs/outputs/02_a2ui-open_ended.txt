@@ -1,0 +1,22 @@
+$ python3 labs/02_a2ui/open_ended.py
+
+============================================================
+  A2UI · 3 · open-ended - HtmlFrame from a custom catalog
+============================================================
+user: How did my solar do this week, and when should I charge the EV?
+
+  [model] createSurface     surface=voltpilot-week catalog=energy-open
+  [model] updateComponents  6 components  root:Column, clock-card:Card, clock-col:Column, clock-title:Text, clock-note:...
+  [model] updateDataModel   /clock/html = <!doctype html>\n<html><head><style>\nbody{margin:0;font:13px system-...
+
+client state: 6 components, data paths ['clock']; missing refs: none
++-------------------------------------------------------------------------
+  Today on the clock
+  Not in any catalog: model-written HTML, run by the energy-open catalog's sandboxed HtmlFrame.
+  [generated view: Energy clock - 3262 bytes of HTML; open the web surface to see it]
++-------------------------------------------------------------------------
+
+/clock/html: 3262 bytes, policy problems: none
+
+the same HtmlFrame on the BASIC catalog is refused - it is not a basic component:
+  updateComponents/components/0 (root): component 'HtmlFrame' is not in catalog https://a2ui.org/specification/v0_9_1/catalogs/basic/catalog.json

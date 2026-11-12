@@ -1,0 +1,27 @@
+$ python3 labs/03_mcp_apps/static.py
+
+==========================================================================
+  MCP Apps · 1 · static - developer-written ui:// view, data-only result
+==========================================================================
+  host -> server  initialize      <- {"protocolVersion":"2025-06-18","capabilities":{"tools":{},"resources":{},"extensions":{"io.mode...
+  host -> server  tools/list      <- {"tools":[{"name":"show_energy_dashboard","description":"Show this week's solar and EV charging ...
+  tool show_energy_dashboard  _meta.ui={'resourceUri': 'ui://voltpilot/static-dashboard.html'}
+  tool schedule_ev_charge     _meta.ui={'visibility': ['app']}
+
+host model picks show_energy_dashboard (model may call: True)
+  host -> server  tools/call      <- {"content":[{"type":"text","text":"Solar 133.3 kWh (+9%), self-sufficiency 71%, best EV window 1...
+  content (for the model): Solar 133.3 kWh (+9%), self-sufficiency 71%, best EV window 10:30-15:00.
+  structuredContent keys (for the view): ['summary', 'week', 'windows']
+  host -> server  resources/read  <- {"contents":[{"uri":"ui://voltpilot/static-dashboard.html","mimeType":"text/html;profile=mcp-app...
+
+view ui://voltpilot/static-dashboard.html  mimeType=text/html;profile=mcp-app  19966 bytes (scripts inlined)
+host CSP: default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'self'
+
+the view's Schedule button -> tools/call schedule_ev_charge (visibility ['app'])
+  view may call: True   model may call: False
+  host -> server  tools/call      <- {"content":[{"type":"text","text":"Booked: the EV will charge 10:30-15:00 (estimated $1.10)."}],...
+  -> Booked: the EV will charge 10:30-15:00 (estimated $1.10).
+  host -> server  tools/call      <- {"content":[{"type":"text","text":"error: unknown charge window '03:00-04:00'; expected one of [...
+  bad window -> isError=True: error: unknown charge window '03:00-04:00'; expected one of ['00:00-04:30', '10:30-15:00',
+
+user prompt in the host chat: How did my solar do this week, and when should I charge the EV?

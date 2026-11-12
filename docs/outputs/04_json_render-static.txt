@@ -1,0 +1,32 @@
+$ python3 labs/04_json_render/static.py
+
+=====================================================================
+  json-render · 1 · static - app-shipped spec, model streams /state
+=====================================================================
+  [app  ] spec (app-shipped, 7 elements)
+  [model] replace /state/week/end              2026-11-08
+  [model] replace /state/week/solarKwh         133.3
+  [model] replace /state/week/deltaPct         9
+  [model] replace /state/week/selfPct          71
+  [model] replace /state/week/importCost       $11.93
+  [model] replace /state/week/days             ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]
+  [model] replace /state/week/solar            [16.8,19.4,21.2,14.1,18.9,22.6,20.3]
+  [model] replace /state/week/advice           Charge 10:30-15:00 on solar surplus - saves $14.02 vs peak.
+
+validation: ok
+terminal renderer (same spec the page draws):
++-- Weekly energy report - Week ending 2026-11-08 - written by the developer, filled by the model --
+  Solar: 133.3 kWh (+9% vs last week)  |  Self-sufficiency: 71%  |  Grid import cost: $11.93
+  Solar per day
+     Mon ######################         16.8 kWh
+     Tue ##########################     19.4 kWh
+     Wed ############################   21.2 kWh
+     Thu ###################            14.1 kWh
+     Fri #########################      18.9 kWh
+     Sat ############################## 22.6 kWh
+     Sun ###########################    20.3 kWh
+  Charge 10:30-15:00 on solar surplus - saves $14.02 vs peak.
++-------------------------------------------------------------------------
+
+the model tries to add an element in static mode:
+  add /elements/ad refused: this stream may only write ['/state']

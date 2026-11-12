@@ -1,0 +1,18 @@
+wrote 504 events from 7 runs to conformance/out/agui_events.json
+@ag-ui/core EventSchemas: 504 events valid, 0 invalid; RunAgentInputSchema: 7 inputs checked
+  by type: RUN_STARTED=7 STATE_SNAPSHOT=7 TEXT_MESSAGE_START=10 TEXT_MESSAGE_CONTENT=24 TEXT_MESSAGE_END=10 TOOL_CALL_START=18 TOOL_CALL_ARGS=373 TOOL_CALL_END=18 RUN_FINISHED=7 STATE_DELTA=14 TOOL_CALL_RESULT=15 CUSTOM=1
+  static      server=voltpilot-static tools=[show_energy_dashboard,schedule_ev_charge] call ok=true structured=summary,week,windows resource=text/html;profile=mcp-app 19966B app-only=[schedule_ev_charge]
+  declarative server=voltpilot-declarative tools=[render_energy_ui,schedule_ev_charge] call ok=true structured=spec resource=text/html;profile=mcp-app 19234B app-only=[schedule_ev_charge]
+  open_ended  server=voltpilot-open-ended tools=[generate_energy_view,schedule_ev_charge] call ok=true structured=title,html,bytes resource=text/html;profile=mcp-app 18942B app-only=[schedule_ev_charge]
+  mixed       server=voltpilot-mixed tools=[render_energy_ui,schedule_ev_charge] call ok=true structured=spec resource=text/html;profile=mcp-app 19234B app-only=[schedule_ev_charge]
+@modelcontextprotocol/sdk client vs our stdio server: 4/4 modes OK
+wrote 4 OpenUI programs and 4 json-render specs to conformance/out/
+  openui static      official parse: root=Card unresolved=0 errors=0 statements=7 -> same tree as ours
+  openui declarative official parse: root=Stack unresolved=0 errors=0 statements=12 -> same tree as ours
+  openui open_ended  official parse: root=Card unresolved=0 errors=0 statements=3 -> same tree as ours
+  openui mixed       official parse: root=Stack unresolved=0 errors=0 statements=17 -> same tree as ours
+  json-render static      validateSpec valid=true errors=0 warnings=0; official prop resolution vs ours: 0 mismatches
+  json-render declarative validateSpec valid=true errors=0 warnings=0; official prop resolution vs ours: 0 mismatches
+  json-render open_ended  validateSpec valid=true errors=0 warnings=0; official prop resolution vs ours: 0 mismatches
+  json-render mixed       validateSpec valid=true errors=0 warnings=0; official prop resolution vs ours: 0 mismatches
+all format checks passed

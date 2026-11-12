@@ -1,0 +1,7 @@
+root = Card("Weekly energy report", [kpis, chart, advice], {{week_label}})
+kpis = Stack([solar, selfsuff, cost], "row", "m")
+solar = Metric("Solar", {{solar}}, {{solar_delta}}, "good")
+selfsuff = Metric("Self-sufficiency", {{self_sufficiency}})
+cost = Metric("Grid import cost", {{import_cost}}, null, "bad")
+chart = BarChart("Solar per day", {{days}}, {{solar_by_day}}, "kWh")
+advice = Text({{advice}})

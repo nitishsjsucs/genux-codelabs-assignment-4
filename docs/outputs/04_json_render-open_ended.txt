@@ -1,0 +1,25 @@
+$ python3 labs/04_json_render/open_ended.py
+
+============================================================
+  json-render · 3 · open-ended - CustomHtml in a sandbox
+============================================================
+  [model] add     /root                        main
+  [model] add     /elements/main               Card
+  [model] add     /elements/note               Text
+  [model] add     /elements/clock              CustomHtml
+  [model] add     /state/clock                 {"html":"<!doctype html>\n<html><head><style>\nbody{margin:0;font:1...
+
+validation: ok
+terminal renderer (same spec the page draws):
++-- Today on the clock - CustomHtml - model-written, sandboxed -----------
+  No catalog chart draws a 24-hour radial view, so the model wrote one.
+  [generated view: Energy clock - 3262 bytes of HTML; open the web surface to see it]
++-------------------------------------------------------------------------
+
+the frame's button -> POST .../open_ended/action {action: schedule_ev_charge}
+  [model] add     /state/ev                    {"status":"Booked: the EV will charge 10:30-15:00 (estimated $1.10)."}
+  [model] add     /elements/booked             Text
+  [model] add     /elements/main/children/1    booked
+
+a document that reaches for the network never reaches the page:
+  [model] REFUSED CustomHtml document refused: loads a remote URL

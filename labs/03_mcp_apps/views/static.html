@@ -1,0 +1,51 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>/*__STYLE__*/ body{background:#fff;padding:12px} </style></head>
+<body>
+<div id="app" class="vp-pending">waiting for the tool result…</div>
+<script>
+/*__SCRIPTS__*/
+
+// STATIC view: the developer wrote this layout. The tool result supplies
+// numbers only (structuredContent); nothing the model writes changes the layout.
+const money = (x) => `$${Number(x).toFixed(2)}`;
+const n = (type, props, children = []) => ({ type, props, children });
+let autoDemo = false;
+
+function layout(d) {
+  const s = d.summary;
+  return n("Column", { gap: "medium" }, [
+    n("Text", { text: "VoltPilot weekly report (MCP App)", variant: "h2" }),
+    n("Row", {}, [
+      n("Metric", { label: "Solar", value: `${s.solar_kwh} kWh`, delta: `+${s.solar_delta_pct}% vs last week`, tone: "good" }),
+      n("Metric", { label: "Self-sufficiency", value: `${s.self_sufficiency_pct}%` }),
+      n("Metric", { label: "Grid import cost", value: money(s.import_cost), tone: "bad" }),
+    ]),
+    n("BarChart", { title: "Solar per day", labels: d.week.map((w) => w.day), values: d.week.map((w) => w.solar), unit: "kWh" }),
+    n("Table", { columns: ["Window", "Source", "Est. cost"], rows: d.windows.map((w) => [w.window, w.source, money(w.cost)]) }),
+  ]);
+}
+
+function render(result) {
+  const d = result.structuredContent;
+  const app = document.getElementById("app");
+  app.className = "";
+  app.replaceChildren(renderTree(layout(d)));
+  const bar = document.createElement("div");
+  bar.className = "vp-row gap-small";
+  bar.style.marginTop = "10px";
+  const status = document.createElement("p");
+  const book = Object.assign(document.createElement("button"), { className: "vp-btn primary", textContent: `Schedule ${d.summary.best_window}` });
+  book.onclick = () => callTool("schedule_ev_charge", { window: d.summary.best_window }, status)
+    .then((r) => r && appBridge.request("ui/message", { role: "user", content: { type: "text", text: `I booked the EV for ${d.summary.best_window}.` } }));
+  const ask = Object.assign(document.createElement("button"), { className: "vp-btn secondary", textContent: "Ask why Thursday was low" });
+  ask.onclick = () => appBridge.request("ui/message", { role: "user", content: { type: "text", text: "Why was Thursday's solar so low (14.1 kWh)?" } });
+  bar.append(book, ask);
+  app.append(bar, status);
+  if (autoDemo) setTimeout(() => book.click(), 400);
+}
+
+appBridge.on("ui/notifications/tool-input", () => {});
+appBridge.on("ui/notifications/tool-result", render);
+appBridge.start({ name: "VoltPilot static dashboard", version: "1.0.0" }).then((init) => { autoDemo = !!init.hostContext?.autoDemo; });
+</script>
+</body></html>

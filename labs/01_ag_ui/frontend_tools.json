@@ -1,0 +1,48 @@
+[
+  {
+    "name": "show_energy_summary",
+    "description": "Render the frontend's EnergySummary component: four headline numbers for the week.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "solar_kwh": {"type": "number"},
+        "solar_delta_pct": {"type": "number"},
+        "self_sufficiency_pct": {"type": "number"},
+        "import_cost": {"type": "number"},
+        "battery_pct": {"type": "number"}
+      },
+      "required": ["solar_kwh", "solar_delta_pct", "self_sufficiency_pct", "import_cost", "battery_pct"]
+    }
+  },
+  {
+    "name": "show_solar_chart",
+    "description": "Render the frontend's SolarChart component: solar kWh per day.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "days": {"type": "array", "items": {"type": "string"}},
+        "solar_kwh": {"type": "array", "items": {"type": "number"}}
+      },
+      "required": ["days", "solar_kwh"]
+    }
+  },
+  {
+    "name": "show_charge_plan",
+    "description": "Render the frontend's ChargePlan component: EV charge windows and a recommendation.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "windows": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {"window": {"type": "string"}, "source": {"type": "string"}, "cost": {"type": "number"}},
+            "required": ["window", "source", "cost"]
+          }
+        },
+        "recommendation": {"type": "string"}
+      },
+      "required": ["windows", "recommendation"]
+    }
+  }
+]

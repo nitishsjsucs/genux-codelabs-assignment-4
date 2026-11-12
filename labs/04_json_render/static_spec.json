@@ -1,0 +1,13 @@
+{
+  "root": "report",
+  "elements": {
+    "report": {"type": "Card", "props": {"title": "Weekly energy report", "subtitle": {"$template": "Week ending ${/week/end} - written by the developer, filled by the model"}}, "children": ["kpis", "chart", "advice"]},
+    "kpis": {"type": "Row", "props": {"gap": "medium"}, "children": ["k-solar", "k-self", "k-cost"]},
+    "k-solar": {"type": "Metric", "props": {"label": "Solar", "value": {"$template": "${/week/solarKwh} kWh"}, "delta": {"$template": "+${/week/deltaPct}% vs last week"}, "tone": "good"}, "children": []},
+    "k-self": {"type": "Metric", "props": {"label": "Self-sufficiency", "value": {"$template": "${/week/selfPct}%"}}, "children": []},
+    "k-cost": {"type": "Metric", "props": {"label": "Grid import cost", "value": {"$state": "/week/importCost"}, "tone": "bad"}, "children": []},
+    "chart": {"type": "BarChart", "props": {"title": "Solar per day", "labels": {"$state": "/week/days"}, "values": {"$state": "/week/solar"}, "unit": "kWh"}, "children": []},
+    "advice": {"type": "Text", "props": {"text": {"$state": "/week/advice"}}, "children": []}
+  },
+  "state": {"week": {"end": "", "solarKwh": "", "deltaPct": "", "selfPct": "", "importCost": "", "days": [], "solar": [], "advice": ""}}
+}

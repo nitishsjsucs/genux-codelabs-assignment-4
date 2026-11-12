@@ -1,0 +1,33 @@
+$ python3 labs/05_openui/static.py
+
+=====================================================================
+  OpenUI Lang · 1 · static - developer templates, model fills slots
+=====================================================================
+templates: {'charge_plan': ['advice', 'rows', 'subtitle'], 'weekly_report': ['advice', 'days', 'import_cost', 'self_sufficiency', 'solar', 'solar_by_day', 'solar_delta', 'week_label']}
+
+  [app  ] template 'weekly_report' filled with slots ['advice', 'days', 'import_cost', 'self_sufficiency', 'solar', 'solar_by_day', 'solar_delta', 'week_label']
+  line  1: root        = Card         pending refs:  3 (kpis, chart, advice)
+  line  2: kpis        = Stack        pending refs:  5 (solar, selfsuff, cost, chart, advice)
+  line  3: solar       = Metric       pending refs:  4 (selfsuff, cost, chart, advice)
+  line  4: selfsuff    = Metric       pending refs:  3 (cost, chart, advice)
+  line  5: cost        = Metric       pending refs:  2 (chart, advice)
+  line  6: chart       = BarChart     pending refs:  1 (advice)
+  line  7: advice      = Text         pending refs:  0 
+
+7 statements, errors: none
++-- Weekly energy report - Week ending 2026-11-08 ------------------------
+  Solar: 133.3 kWh (+9% vs last week)  |  Self-sufficiency: 71%  |  Grid import cost: $11.93
+  Solar per day
+     Mon ######################         16.8 kWh
+     Tue ##########################     19.4 kWh
+     Wed ############################   21.2 kWh
+     Thu ###################            14.1 kWh
+     Fri #########################      18.9 kWh
+     Sat ############################## 22.6 kWh
+     Sun ###########################    20.3 kWh
+  Charge 10:30-15:00 on solar surplus - saves $14.02 vs peak.
++-------------------------------------------------------------------------
+
+an injection attempt stays a string literal:
+  root = Card("When to charge the EV", [windows, advice], "x\"), Button(\"Pay now\", \"transfer_funds")
+  parsed root subtitle -> 'x"), Button("Pay now", "transfer_funds'; components: ['Card', 'Table', 'Text']

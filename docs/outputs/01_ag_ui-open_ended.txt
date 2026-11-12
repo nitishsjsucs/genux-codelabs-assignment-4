@@ -1,0 +1,42 @@
+$ python3 labs/01_ag_ui/open_ended.py
+
+=============================================================
+  AG-UI · 3 · open-ended - generated HTML in a CUSTOM event
+=============================================================
+user: How did my solar do this week, and when should I charge the EV?
+
+RUN 1  POST /api/01_ag_ui/open_ended  ->  SSE
+  RUN_STARTED           threadId=thread-voltpilot runId=run-61e5eb6d
+  STATE_SNAPSHOT        snapshot keys=[]
+  TEXT_MESSAGE_START    messageId=msg-f12d1b34 role=assistant
+  TEXT_MESSAGE_CONTENT  x2   The catalog cannot draw a 24-hour clock, so I wrote one for you.
+  TEXT_MESSAGE_END      messageId=msg-f12d1b34
+  TOOL_CALL_START       toolCallId=call_1_1 toolCallName=render_html parentMessageId=msg-f12d1b34
+  TOOL_CALL_ARGS        x109 {"title": "Energy clock", "html": "<!doctype html>\n<html><head><style>\nbody{margin:0;font:1...
+  TOOL_CALL_END         toolCallId=call_1_1
+  CUSTOM                name=voltpilot.generated_html value={"title":"Energy clock","html":"<!doctype html>\n<html><head><sty...
+  TOOL_CALL_RESULT      messageId=msg-92fe8373 toolCallId=call_1_1 content=mounted 'Energy clock' (3262 bytes) in a sandboxed...
+  TEXT_MESSAGE_START    messageId=msg-577da69d role=assistant
+  TEXT_MESSAGE_CONTENT  x3   The teal arc marks 10:30-15:00, when solar covers most of the charge.
+  TEXT_MESSAGE_END      messageId=msg-577da69d
+  RUN_FINISHED          threadId=thread-voltpilot runId=run-61e5eb6d
+
+CUSTOM payload: 3262 bytes of HTML; policy problems: none
+the page mounts it as <iframe sandbox="allow-scripts" srcdoc=...> with CSP: default-src 'none'; script-src 'unsafe-inline'; style-src 'u...
+
+the user clicks 'Schedule 10:30-15:00' inside the frame -> postMessage -> page starts RUN 2
+  RUN_STARTED           threadId=thread-voltpilot runId=run-ceb3c39e
+  STATE_SNAPSHOT        snapshot keys=[]
+  TOOL_CALL_START       toolCallId=call_3_1 toolCallName=schedule_ev_charge parentMessageId=msg-86095499
+  TOOL_CALL_ARGS        x1   {"window": "10:30-15:00"}
+  TOOL_CALL_END         toolCallId=call_3_1
+  STATE_DELTA           add /ev
+  TOOL_CALL_RESULT      messageId=msg-aec368bf toolCallId=call_3_1 content=Booked: the EV will charge 10:30-15:00 (estimated ...
+  TEXT_MESSAGE_START    messageId=msg-cb8652da role=assistant
+  TEXT_MESSAGE_CONTENT  x2   Booked: the EV will charge 10:30-15:00 (estimated $1.10).
+  TEXT_MESSAGE_END      messageId=msg-cb8652da
+  RUN_FINISHED          threadId=thread-voltpilot runId=run-ceb3c39e
+
+a forged message naming a non-allow-listed action is refused before the model runs:
+  RUN_STARTED           threadId=thread-voltpilot runId=run-391c5cf9
+  RUN_ERROR             message=action refused: action 'delete_account' is not allowed; a...
