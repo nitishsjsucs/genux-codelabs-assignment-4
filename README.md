@@ -2,8 +2,8 @@
 
 **Six generative-UI technologies, each in four generation modes, on one running example.**
 
-A2UI · AG-UI · MCP Apps · json-render · OpenUI Lang · harness integration
-× static · declarative · open-ended · mixed
+**Technologies:** A2UI · AG-UI · MCP Apps · json-render · OpenUI Lang · harness integration<br>
+**Modes:** static · declarative · open-ended · mixed
 
 nitishsjsucs · SJSU · CMPE · November 2026 ·
 Reference course: [dlmastery/simple-coding-harness/genui](https://github.com/dlmastery/simple-coding-harness/tree/main/genui)
