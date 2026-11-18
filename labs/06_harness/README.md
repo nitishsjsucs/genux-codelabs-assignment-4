@@ -78,9 +78,9 @@ done after 3 model calls
 step 1 model: The catalog has no radial chart, so here is a custom one.
 step 1 tool_call  render_html({"title": "Energy clock", "html": "<!doctype html>\n<html><head><style>\nbody{margin:0;font:13px system-ui,san...)
   ┌ surface: generated HTML - Energy clock (3262 bytes)
-  │ terminals cannot run it; saved as labs/06_harness/out/artifacts/0f44ee9d-energy-clock.html
+  │ terminals cannot run it; saved as labs/06_harness/out/artifacts/938ef5d0-energy-clock.html
   └ open the web surface (python3 serve.py) to see it sandboxed
-step 1 tool_result ok  shown 'Energy clock' (3262 bytes) - sandboxed on the web surface, saved as labs/06_harness/out/artifacts/0f44ee9d-energy-clock.html
+step 1 tool_result ok  shown 'Energy clock' (3262 bytes) - sandboxed on the web surface, saved as labs/06_harness/out/artifacts/938ef5d0-energy-clock.html
 step 2 model: The teal arc is 10:30-15:00. Press the button in the clock to book it.
 done after 2 model calls
 
